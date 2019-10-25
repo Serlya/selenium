@@ -1,0 +1,32 @@
+package zippyops.selenium;
+import org.openqa.selenium.By;
+import org.openqa.selenium.By.ById;
+import org.openqa.selenium.By.ByName;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+
+public class ChromeHeadlessDemo {
+	
+	public static void main(String[] args) {
+		System.out.println("=========Test Started=========");
+	       System.setProperty("webdriver.chrome.driver", "C:\\\\\\\\selenium\\\\\\\\chromedriver_win32\\\\\\\\ChromeDriver.exe");
+	       // Add options to Google Chrome. The window-size is important for responsive sites
+	       ChromeOptions options = new ChromeOptions();
+	       options.addArguments("headless");
+	       options.addArguments("window-size=16000x900");
+	       WebDriver driver = new ChromeDriver(options);
+	       driver.manage().window().maximize();
+	       // driver.get("http://192.168.1.15:8080/manager/");
+	       driver.get("http://tomcat-user:zippyos@192.168.1.15:8080/manager/");
+	       driver.get("http://192.168.1.15:8080/newapp-0.0.1-SNAPSHOT/");
+	       driver.getTitle();
+	       driver.close();
+	       driver.quit();
+	       System.out.println("Successful");
+
+	}
+
+}
+	
