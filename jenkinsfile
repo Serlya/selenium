@@ -1,0 +1,27 @@
+pipeline {
+        agent any
+    stages {
+        stage ('checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage ('Build') {
+            steps {
+                sh 'mvn -f /var/lib/jenkins/workspace/Java-Pipeline/pom.xml clean install'
+            }
+          }
+        stage ('Deploy Application') {
+            steps {
+			    git branch: "master", credentialsId: "6b24f1a8-3415-4a50-beaf-7300cce3ebcb", url: "http://192.168.2.52:7990/scm/sun/java-playbook.git"
+                sh 'ansible-playbook -i javahosts tomcatcentos.yml'
+                }
+              }
+  		stage ('Application Testing') {
+			steps {
+				git branch: "master", credentialsId: "6b24f1a8-3415-4a50-beaf-7300cce3ebcb", url: "http://192.168.2.52:7990/scm/sun/java-playbook.git"
+				sh 'ansible-playbook -i seleniumhosts seleniumscript.yml -vvvv'			  
+				}
+			}
+	}
+}
