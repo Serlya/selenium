@@ -1,5 +1,9 @@
 pipeline {
         agent any
+        triggers {
+        // poll repo every 2 minute changes
+        pollSCM('* * * * *')
+		 }
     stages {
         stage ('checkout') {
             steps {
@@ -17,7 +21,7 @@ pipeline {
 			}
 		}
 		
-        stage ('sleep') {
+        stage ('Sleep') {
 			steps {
 			  sh 'sleep 200'
 			}
@@ -33,6 +37,11 @@ pipeline {
 			steps {
 				git branch: "master", credentialsId: "6b24f1a8-3415-4a50-beaf-7300cce3ebcb", url: "http://192.168.2.52:7990/scm/sun/java-playbook.git"
 				sh 'ansible-playbook -i seleniumhosts seleniumscript.yml -vvvv'			  
+				}
+			}
+        stage('Email Notification Stage') {
+			steps {
+				mail bcc: '', body: "${params.build}" + ' build is success', cc: '', from: '', replyTo: '', subject: 'Build Status', to: 'sunisgcet@gmail.com,sunitha.a@zippyops.in'
 				}
 			}
 	}
